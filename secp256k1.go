@@ -231,7 +231,6 @@ func UncompressedSign(msg []byte, seckey []byte) []byte {
 		log.Panic("Sign, message nil")
 	}
 	var nonce []byte = RandByte(32)
-	var sig []byte = make([]byte, 65)
 	var recid int
 
 	var cSig secp.Signature
