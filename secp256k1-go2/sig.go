@@ -153,9 +153,8 @@ func (r *Signature) ParseBytes(sig []byte) int {
 }
 */
 
-/*
 //uncompressed Signature parsing in DER
-func (sig *Signature) Bytes() []byte {
+func (sig *Signature) UncompressedBytes() []byte {
 	r := sig.R.Bytes()
 	if r[0] >= 0x80 {
 		r = append([]byte{0}, r...)
@@ -175,7 +174,6 @@ func (sig *Signature) Bytes() []byte {
 	res.Write(s)
 	return res.Bytes()
 }
-*/
 
 //compressed signature parsing
 func (r *Signature) ParseBytes(sig []byte) {

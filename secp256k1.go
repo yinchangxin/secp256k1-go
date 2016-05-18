@@ -219,6 +219,40 @@ func DeterministicKeyPairIterator(seed_in []byte) ([]byte, []byte, []byte) {
 	return seed1, pubkey, seckey
 }
 
+// uncompressed sign
+func UncompressedSign(msg []byte, seckey []byte) []byte {
+	if len(seckey) != 32 {
+		log.Panic("Sign, Invalid seckey length")
+	}
+	if secp.SeckeyIsValid(seckey) != 1 {
+		log.Panic("Attempting to sign with invalid seckey")
+	}
+	if msg == nil {
+		log.Panic("Sign, message nil")
+	}
+	var nonce []byte = RandByte(32)
+	var sig []byte = make([]byte, 65)
+	var recid int
+
+	var cSig secp.Signature
+
+	var seckey1 secp.Number
+	var msg1 secp.Number
+	var nonce1 secp.Number
+
+	seckey1.SetBytes(seckey)
+	msg1.SetBytes(msg)
+	nonce1.SetBytes(nonce)
+
+	ret := cSig.Sign(&seckey1, &msg1, &nonce1, &recid)
+
+	if ret != 1 {
+		log.Panic("Secp25k1-go, Sign, signature operation failed")
+	}
+
+	return cSig.UnCompressedBytes()
+}
+
 //Rename SignHash
 func Sign(msg []byte, seckey []byte) []byte {
 
